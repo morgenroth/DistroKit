@@ -1,0 +1,54 @@
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "am33xx.dtsi"
+#include "am335x-bone-common.dtsi"
+
+&ldo3_reg {
+	regulator-min-microvolt = <1800000>;
+	regulator-max-microvolt = <3300000>;
+	regulator-always-on;
+};
+
+&mmc1 {
+	vmmc-supply = <&ldo3_reg>;
+};
+
+&sham {
+	status = "okay";
+};
+
+&aes {
+	status = "okay";
+};
+
+&am33xx_pinmux {
+	spi1_pins: pinmux_spi1_pins {
+		pinctrl-single,pins = <
+			0x190 (PIN_INPUT_PULLDOWN | MUX_MODE3) /* mcasp0_aclkx.spi1_sclk */
+			0x194 (PIN_INPUT | MUX_MODE3) /* mcasp0_fsx.spi1_d0 */
+			0x198 (PIN_OUTPUT_PULLDOWN | MUX_MODE3) /* mcasp0_axr0.spi1_d1 */
+			0x19c (PIN_OUTPUT_PULLUP | MUX_MODE3) /* mcasp0_ahclkr.spi1_cs0 */
+			0x1a4 (PIN_INPUT | MUX_MODE7)  /* IRQ: mcasp0_fsr.gpio3_19 */
+		>;
+	};
+};
+
+&spi1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pins>;
+	mrf24j40ma@0 {
+		compatible = "microchip,mrf24j40ma";
+		spi-max-frequency = <5000000>;
+		reg = <0>;
+		interrupts = <19 4>;
+		interrupt-parent = <&gpio3>;
+	};
+};
