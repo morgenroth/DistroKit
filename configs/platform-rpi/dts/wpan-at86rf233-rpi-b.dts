@@ -1,0 +1,38 @@
+/dts-v1/;
+#include "bcm2835.dtsi"
+#include "bcm2835-rpi.dtsi"
+
+/ {
+	compatible = "raspberrypi,model-b", "brcm,bcm2835";
+	model = "Raspberry Pi Model B";
+
+	leds {
+		act {
+			gpios = <&gpio 16 1>;
+		};
+	};
+};
+
+&gpio {
+	pinctrl-0 = <&gpioout &alt0 &i2s_alt2 &alt3>;
+
+	/* I2S interface */
+	i2s_alt2: i2s_alt2 {
+		brcm,pins = <28 29 30 31>;
+		brcm,function = <6>; /* alt2 */
+	};
+};
+
+&spi {
+	status = "okay";
+	at86rf233@0 {
+		compatible = "atmel,at86rf233";
+		spi-max-frequency = <3000000>;
+		reg = <0>;
+		interrupts = <23 1>;
+		interrupt-parent = <&gpio>;
+		reset-gpio = <&gpio 24 1>;
+		sleep-gpio = <&gpio 25 1>;
+		xtal-trim = /bits/ 8 <0x0F>;
+	};
+};
