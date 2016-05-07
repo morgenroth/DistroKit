@@ -13,3 +13,6 @@
 [submodule "configs/platform-pengutronix-beaglebone"]
 	path = configs/platform-pengutronix-beaglebone
 	url = ../platform-pengutronix-beaglebone.git
+[submodule "configs/platform-carfi-alix"]
+	path = configs/platform-carfi-alix
+	url = https://github.com/morgenroth/platform-carfi-alix.git
